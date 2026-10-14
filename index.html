@@ -641,7 +641,7 @@ figure.quote{margin:0}
       <div class="head">
         <span class="eyebrow">צור קשר</span>
         <h2>נשמח לשמוע מכם</h2>
-        <p>השאירו פרטים, ואפשר גם לצרף טופס 106 או מסמך אחר. נחזור אליכם עד סוף יום העבודה הבא.</p>
+        <p>השאירו פרטים ונחזור אליכם עד סוף יום העבודה הבא.</p>
       </div>
       <dl class="details">
         <div><dt>טלפון ווואטסאפ</dt><dd><span dir="ltr">052-4310428</span></dd></div>
@@ -656,7 +656,6 @@ figure.quote{margin:0}
         <label>טלפון<input id="c-phone" type="tel" inputmode="tel" autocomplete="tel"></label>
         <label class="full">דוא״ל<input id="c-email" type="email" autocomplete="email"></label>
         <label class="full">במה נוכל לעזור?<textarea id="c-msg"></textarea></label>
-        <label class="full">צירוף קובץ <span class="hint">(לא חובה: טופס 106, תלוש שכר או מכתב מהרשויות)</span><input id="c-file" type="file" accept=".pdf,.jpg,.jpeg,.png"></label>
         <div class="full" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
           <button class="btn" type="submit">שליחה</button>
           <span class="note" id="c-note" role="status"></span>
@@ -949,7 +948,7 @@ figure.quote{margin:0}
       <div class="head">
         <span class="eyebrow">اتصل بنا</span>
         <h2>يسعدنا أن نسمع منكم</h2>
-        <p>اتركوا تفاصيلكم، ويمكن أيضًا إرفاق نموذج 106 أو مستند آخر. سنعود إليكم حتى نهاية يوم العمل التالي.</p>
+        <p>اتركوا تفاصيلكم وسنعود إليكم حتى نهاية يوم العمل التالي.</p>
       </div>
       <dl class="details">
         <div><dt>هاتف وواتساب</dt><dd><span dir="ltr">052-4310428</span></dd></div>
@@ -964,7 +963,6 @@ figure.quote{margin:0}
         <label>الهاتف<input id="c-phone-ar" type="tel" inputmode="tel" autocomplete="tel"></label>
         <label class="full">البريد الإلكتروني<input id="c-email-ar" type="email" autocomplete="email"></label>
         <label class="full">كيف يمكننا المساعدة؟<textarea id="c-msg-ar"></textarea></label>
-        <label class="full">إرفاق ملف <span class="hint">(اختياري: نموذج 106، قسيمة راتب أو رسالة من السلطات)</span><input id="c-file-ar" type="file" accept=".pdf,.jpg,.jpeg,.png"></label>
         <div class="full" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
           <button class="btn" type="submit">إرسال</button>
           <span class="note" id="c-note-ar" role="status"></span>
@@ -1046,9 +1044,8 @@ function init(lang){
    note.textContent=msg;
    var f={'סוג פנייה':form==='lead'?'טופס יצירת קשר':'חזרו אליי','שם':$(nm).value.trim(),'טלפון':$(ph).value.trim()};
    if(form==='lead'){f['דוא"ל']=$('c-email').value.trim();f['הודעה']=$('c-msg').value.trim()}
-   var file=form==='lead'&&$('c-file').files[0];
    intake({form:form,name:f['שם'],phone:f['טלפון'],email:f['דוא"ל']||'',message:f['הודעה']||''});
-   send(f,file,function(){note.textContent=t.errSend});
+   send(f,null,function(){note.textContent=t.errSend});
    $(form).reset();
   });
  }
