@@ -7,6 +7,8 @@
  *
  * הגדרה חד-פעמית: Project Settings → Script properties → AMS_KEY = מפתח סודי ארוך,
  * אותו ערך שמוגדר ב-AMS (WEB_LEADS_KEY).
+ * עובד גם בגיליון קיים: הסקריפט נכתב מתוך הגיליון (Extensions → Apps Script) וכותב רק ללשונית
+ * SHEET_NAME (ברירת מחדל "leads"; אפשר לשנות ב-Script properties). שאר הלשוניות לא נגעות.
  */
 /* להרצה פעם אחת מהעורך (Run → setupKey): יוצר מפתח אקראי ומציג אותו ביומן. */
 function setupKey() {
@@ -16,7 +18,7 @@ function setupKey() {
   Logger.log('AMS_KEY = ' + p.getProperty('AMS_KEY'));
 }
 
-var SHEET = 'leads';
+var SHEET = PropertiesService.getScriptProperties().getProperty('SHEET_NAME') || 'leads';
 var HEAD = ['lead_id', 'received_at', 'form', 'lang', 'name', 'phone', 'email', 'message', 'answers', 'status', 'ams_customer_id', 'done_at'];
 
 function sheet_() {
