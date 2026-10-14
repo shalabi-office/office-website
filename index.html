@@ -368,6 +368,19 @@ figure.quote{margin:0}
 .hero h1 em{display:block}
 [data-lang="ar"] .hero h1{font-size:clamp(1.804rem,3.936vw,2.952rem);line-height:1.524;white-space:nowrap}
 @media (max-width:620px){[data-lang="ar"] .hero h1{white-space:normal}}
+/* v26: phones. Header fits in 360px (it pushed the whole page sideways), no horizontal scroll */
+html,body{overflow-x:clip}
+.chips,.chip{min-width:0}
+@media (max-width:520px){
+ .top .wrap{gap:8px;padding-block:12px}
+ .logo-img{height:42px;padding:3px 6px}
+ .top-actions{gap:8px}
+ .top-actions .btn{padding:10px 12px;white-space:nowrap;font-size:.92rem}
+ .lang-sw{padding:6px 8px;font-size:.92rem}
+ .hero-abed .portrait{width:140px}
+ form,.quiz,.cform{padding:20px 16px}
+}
+@media (max-width:370px){.logo-img{height:36px}.top-actions .btn{padding:9px 10px}}
 </style>
 </head>
 <body>
