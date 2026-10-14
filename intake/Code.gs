@@ -19,7 +19,8 @@ function setupKey() {
 }
 
 var SHEET = PropertiesService.getScriptProperties().getProperty('SHEET_NAME') || 'leads';
-var HEAD = ['lead_id', 'received_at', 'form', 'lang', 'name', 'phone', 'email', 'message', 'answers', 'status', 'ams_customer_id', 'done_at'];
+var HEAD = ['lead_id', 'received_at', 'form', 'lang', 'name', 'phone', 'email', 'message', 'answers', 'status', 'ams_customer_id', 'done_at',
+  'employment', 'age', 'events'];  // M-O: תשובות השאלון לקריאה. AMS קורא את answers (JSON)
 
 function sheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -50,7 +51,9 @@ function doPost(e) {
     lock.waitLock(20000);
     try {
       sheet_().appendRow([Utilities.getUuid(), new Date(), clip_(b.form, 20), clip_(b.lang, 5), name, "'" + phone,  // ' כדי ש-Sheets לא יהפוך למספר ויוריד את ה-0
-        clip_(b.email, 120), clip_(b.message, 3000), JSON.stringify(answers).slice(0, 3000), 'new', '', '']);
+        clip_(b.email, 120), clip_(b.message, 3000), JSON.stringify(answers).slice(0, 3000), 'new', '', '',
+        clip_(answers.employment, 40), clip_(answers.age, 20),
+        (Array.isArray(answers.events) ? answers.events : []).map(function (v) { return clip_(v, 40); }).join(', ')]);
     } finally {
       lock.releaseLock();
     }
