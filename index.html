@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="light only">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>המרכז להחזרי מס</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,8 +25,8 @@
   --body:"IBM Plex Sans Hebrew","Assistant","Segoe UI",Arial,sans-serif;
   --radius:10px;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --brand:#e3e8ee;--brand-ink:#142535;--accent:#c99a4e;--bg:#0e1822;--surface:#132130;--fg:#e8eef1;--muted:#9aabb5;--line:#26343d;--tint:#1d2a33;color-scheme:dark}}
+/* v27: אותם צבעים בכל מכשיר. בלי מצב כהה אוטומטי (בטלפון במצב כהה האתר נראה אחרת מהמחשב) */
+:root{color-scheme:light}
 :root[data-theme="dark"]{
   --brand:#e3e8ee;--brand-ink:#142535;--accent:#c99a4e;--bg:#0e1822;--surface:#132130;--fg:#e8eef1;--muted:#9aabb5;--line:#26343d;--tint:#1d2a33;color-scheme:dark}
 
@@ -381,6 +382,19 @@ html,body{overflow-x:clip}
  form,.quiz,.cform{padding:20px 16px}
 }
 @media (max-width:370px){.logo-img{height:36px}.top-actions .btn{padding:9px 10px}}
+/* v27: phone hero in the desktop order: Abed's card right under the headline, quiz after the text */
+@media (max-width:620px){
+ .hero .wrap{display:flex;flex-direction:column;align-items:stretch;gap:0}
+ .hero-copy{display:contents}
+ .hero .free-badge{order:1;align-self:flex-start}
+ .hero h1{order:2}
+ .hero .pay-line{order:3}
+ .hero-abed{order:4;margin:4px 0 22px}
+ .hero .lead{order:5}
+ .hero .ticks{order:6}
+ .hero .authority{order:7}
+ .hero .quiz{order:8;margin-top:32px}
+}
 </style>
 </head>
 <body>
