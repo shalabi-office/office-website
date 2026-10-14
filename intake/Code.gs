@@ -8,6 +8,14 @@
  * הגדרה חד-פעמית: Project Settings → Script properties → AMS_KEY = מפתח סודי ארוך,
  * אותו ערך שמוגדר ב-AMS (WEB_LEADS_KEY).
  */
+/* להרצה פעם אחת מהעורך (Run → setupKey): יוצר מפתח אקראי ומציג אותו ביומן. */
+function setupKey() {
+  var p = PropertiesService.getScriptProperties();
+  if (!p.getProperty('AMS_KEY')) p.setProperty('AMS_KEY', (Utilities.getUuid() + Utilities.getUuid()).replace(/-/g, ''));
+  sheet_();
+  Logger.log('AMS_KEY = ' + p.getProperty('AMS_KEY'));
+}
+
 var SHEET = 'leads';
 var HEAD = ['lead_id', 'received_at', 'form', 'lang', 'name', 'phone', 'email', 'message', 'answers', 'status', 'ams_customer_id', 'done_at'];
 
