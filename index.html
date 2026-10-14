@@ -1009,7 +1009,7 @@ function init(lang){
   var fd=new FormData();fd.append('_subject','פנייה חדשה מהאתר ('+(lang==='ar'?'ערבית':'עברית')+'): '+fields['שם']);fd.append('_template','table');fd.append('_captcha','false');
   for(var k in fields)fd.append(k,fields[k]);
   if(file)fd.append('attachment',file);
-  fetch('https://formsubmit.co/ajax/taxcenter9@gmail.com',{method:'POST',body:fd,headers:{'Accept':'application/json'}})
+  fetch('https://formsubmit.co/ajax/9922959d31cb4957b6f72341779babe9',{method:'POST',body:fd,headers:{'Accept':'application/json'}})
    .then(function(r){if(!r.ok)throw 0}).catch(function(){onFail&&onFail()});
  }
  $('yr').textContent=new Date().getFullYear();
