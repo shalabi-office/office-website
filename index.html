@@ -998,6 +998,15 @@ function init(lang){
  var root=document.querySelector('[data-lang="'+lang+'"]'),x=lang==='ar'?'-ar':'',t=T[lang];
  function $(id){return root.querySelector('#'+id+x)}
  function esc(v){return v.replace(/[<>&"]/g,'')}
+ /* תיבת הקליטה של AMS (intake/Code.gs). ריק = לא שולחים לשם, רק במייל */
+ var INTAKE_URL='';
+ var EMP=['שכיר','עצמאי','שכיר ועצמאי','פנסיונר'],AGES=['עד 30','31–45','46–60','מעל 60'],
+     EVENTS=['החלפת עבודה','שני מעסיקים','פיצויים או קופה','אבטלה או חל״ת','תואר','ביטוח חיים','תרומות','ילדים','כספים בקופות'];
+ function intake(data){
+  if(!INTAKE_URL)return;
+  data.lang=lang;
+  fetch(INTAKE_URL,{method:'POST',body:JSON.stringify(data),headers:{'Content-Type':'text/plain;charset=utf-8'}}).catch(function(){});
+ }
  function send(fields,file,onFail){
   var fd=new FormData();fd.append('_subject','פנייה חדשה מהאתר ('+(lang==='ar'?'ערבית':'עברית')+'): '+fields['שם']);fd.append('_template','table');fd.append('_captcha','false');
   for(var k in fields)fd.append(k,fields[k]);
@@ -1020,9 +1029,13 @@ function init(lang){
   if(!name){err.textContent=t.errName;return}
   if(phone.length<9){err.textContent=t.errPhone;return}
   steps.forEach(function(f){f.hidden=true});$('q-nav').hidden=true;$('q-bar').style.width='100%';$('q-count').textContent=t.got;
-  var sit=[].map.call(root.querySelectorAll('input[name="s"]:checked'),function(c){return c.value}).join(', ');
-  var emp=root.querySelector('input[name="emp"]:checked');
-  send({'סוג פנייה':'בדיקת זכאות','שם':name,'טלפון':$('q-phone').value.trim(),'מצב תעסוקתי':emp?emp.value:'','גיל':$('q-age').value,'מה קרה':sit||'לא סומן'},null,function(){d.innerHTML+='<p>'+t.errSend+'</p>'});
+  /* תשובות בעברית קבועה לפי מיקום, כך שגם השאלון הערבי נקלט באותם ערכים */
+  var events=[].map.call(root.querySelectorAll('input[id^="s-"]:checked'),function(c){return EVENTS[+c.id.split('-')[1]-1]});
+  var empEl=root.querySelector('input[id^="emp-"]:checked'),empHe=empEl?EMP[+empEl.id.split('-')[1]-1]:'';
+  var ageHe=AGES[$('q-age').selectedIndex]||'';
+  var sit=events.join(', '),emp={value:empHe};
+  intake({form:'check',name:name,phone:$('q-phone').value.trim(),answers:{employment:empHe,age:ageHe,events:events}});
+  send({'סוג פנייה':'בדיקת זכאות','שם':name,'טלפון':$('q-phone').value.trim(),'מצב תעסוקתי':emp?emp.value:'','גיל':ageHe,'מה קרה':sit||'לא סומן'},null,function(){d.innerHTML+='<p>'+t.errSend+'</p>'});
   var d=$('q-done');d.hidden=false;d.innerHTML='<b>'+t.thx+esc(name)+t.done;
  });
  $('check').addEventListener('submit',function(e){e.preventDefault()});
@@ -1034,6 +1047,7 @@ function init(lang){
    var f={'סוג פנייה':form==='lead'?'טופס יצירת קשר':'חזרו אליי','שם':$(nm).value.trim(),'טלפון':$(ph).value.trim()};
    if(form==='lead'){f['דוא"ל']=$('c-email').value.trim();f['הודעה']=$('c-msg').value.trim()}
    var file=form==='lead'&&$('c-file').files[0];
+   intake({form:form,name:f['שם'],phone:f['טלפון'],email:f['דוא"ל']||'',message:f['הודעה']||''});
    send(f,file,function(){note.textContent=t.errSend});
    $(form).reset();
   });
