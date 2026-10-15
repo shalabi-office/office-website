@@ -44,6 +44,7 @@ def head(lang):
                                        'opens': '09:00', 'closes': '15:00'}],
         'founder': {'@type': 'Person', 'name': 'עבדאלהאדי שלבי', 'alternateName': 'عبد الهادي شلبي',
                     'jobTitle': 'Certified Public Accountant'},
+        'areaServed': {'@type': 'Country', 'name': 'Israel'},
         'knowsLanguage': ['he', 'ar'], 'sameAs': SOCIAL,
     }
     e = lambda s: s.replace('&', '&amp;').replace('"', '&quot;')
