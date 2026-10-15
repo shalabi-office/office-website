@@ -20,16 +20,12 @@ PAGES = {
         title='החזר מס אכסאל ונצרת | רו״ח שלבי - המרכז להחזרי מס',
         desc='בדיקת זכאות להחזר מס חינם תוך דקה. משרד רואה חשבון עבדאלהאדי שלבי באכסאל: '
              'החזרי מס לשכירים ולפנסיונרים, משיכת כספים ודוחות שנתיים. 052-4310428',
-        cities=['אכסאל', 'נצרת', 'נוף הגליל', 'יפיע', 'עין מאהל', 'דבוריה', 'כפר כנא', 'משהד', 'ריינה', 'עפולה'],
-        area='שירות לתושבי {} והסביבה.', sep=', ',
     ),
     'ar': dict(
         url=SITE + '/ar/', locale='ar_IL',
         title='استرجاع ضريبة إكسال والناصرة | المحاسب شلبي - المركز لاسترجاع الضرائب',
         desc='افحصوا مجانًا خلال دقيقة إذا كان يحق لكم استرجاع ضريبة. مكتب المحاسب القانوني عبد الهادي شلبي في إكسال: '
              'استرجاع ضرائب للأجيرين والمتقاعدين، سحب أموال وتقارير سنوية. 052-4310428',
-        cities=['إكسال', 'الناصرة', 'نوف هجليل', 'يافة الناصرة', 'عين ماهل', 'دبورية', 'كفر كنا', 'المشهد', 'الرينة', 'العفولة'],
-        area='نخدم سكان {} والمنطقة.', sep='، ',
     ),
 }
 
@@ -46,7 +42,6 @@ def head(lang):
         'openingHoursSpecification': [{'@type': 'OpeningHoursSpecification',
                                        'dayOfWeek': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
                                        'opens': '09:00', 'closes': '15:00'}],
-        'areaServed': [{'@type': 'City', 'name': c} for c in p['cities']],
         'founder': {'@type': 'Person', 'name': 'עבדאלהאדי שלבי', 'alternateName': 'عبد الهادي شلبي',
                     'jobTitle': 'Certified Public Accountant'},
         'knowsLanguage': ['he', 'ar'], 'sameAs': SOCIAL,
@@ -75,11 +70,6 @@ def head(lang):
     ])
 
 
-def area_line(lang):
-    p = PAGES[lang]
-    return f'<span class="disclaimer area">{p["area"].format(p["sep"].join(p["cities"]))}</span>'
-
-
 def sub(pattern, repl, s, count=1):
     out, n = re.subn(pattern, lambda m: repl, s, count=count, flags=re.S)
     if n != count:
@@ -96,10 +86,8 @@ if '<!-- seo:start' in src:
 else:
     src = sub(r'<title>[^<]*</title>', head('he'), src)
 
-# Service-area line at the bottom of each language's footer.
+# Remove the service-area line if an older build added it.
 src = re.sub(r'\n    <span class="disclaimer area">[^<]*</span>', '', src)
-for lang, marker in (('he', 'ואינו גוף ממשלתי.</span>'), ('ar', 'وليس جهة حكومية.</span>')):
-    src = sub(re.escape(marker), marker + '\n    ' + area_line(lang), src)
 
 src_path.write_text(src, encoding='utf-8')
 
